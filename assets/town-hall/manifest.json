@@ -1,0 +1,110 @@
+{
+  "format": "webp",
+  "transparent": true,
+  "canvas": {
+    "width": 384,
+    "height": 384
+  },
+  "anchorPixels": {
+    "x": 192,
+    "y": 376
+  },
+  "assets": [
+    {
+      "level": 1,
+      "file": "ruler-hall-level-01.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 19586,
+      "sha256": "3f89e076babc5296f335ece895d9121f285fc856254c7b7f94c90abdfd8808c7"
+    },
+    {
+      "level": 2,
+      "file": "ruler-hall-level-02.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 22778,
+      "sha256": "321c4d6e5013c5af93a7cd58f7d071cfd9500f78334738ed91dce441067b8cbd"
+    },
+    {
+      "level": 3,
+      "file": "ruler-hall-level-03.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 25450,
+      "sha256": "1fc29c28d76c6616d1fc7398aa12baca3087e917f0ef80cd35b4d8b639bced25"
+    },
+    {
+      "level": 4,
+      "file": "ruler-hall-level-04.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 26292,
+      "sha256": "34e1bc7e610dec3332a85ecd5ceef45abee9e5d6a8947cd3b7876fb1a13cb2f8"
+    },
+    {
+      "level": 5,
+      "file": "ruler-hall-level-05.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 26416,
+      "sha256": "eb48a9d85b1a4aab495a3527da33952af6a437687cf0f37dfd47f9a64a2b8dc4"
+    },
+    {
+      "level": 6,
+      "file": "ruler-hall-level-06.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 28040,
+      "sha256": "9489398120d26e184eb551f45cc60f2c663b57a7db54f8020fafed3ee889711a"
+    },
+    {
+      "level": 7,
+      "file": "ruler-hall-level-07.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 30924,
+      "sha256": "23f395ecbef04a458e668411deaf5a567270d98283f5066b3d8cb83b5cc76d79"
+    },
+    {
+      "level": 8,
+      "file": "ruler-hall-level-08.webp",
+      "width": 384,
+      "height": 384,
+      "anchor": {
+        "x": 0.5,
+        "y": 0.9791666666666666
+      },
+      "bytes": 33498,
+      "sha256": "3e4d5859fe0274987f82f1ee2c0d038ea2a319e3f4222371435f3a85b0b2f8e9"
+    }
+  ]
+}
