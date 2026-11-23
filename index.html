@@ -1265,14 +1265,20 @@ body.in-battle .toast.out{transform:translateY(8px)!important}
 .card.home-merchant--expired{border-inline-start:4px solid var(--gold)}
 .home-merchant-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .home-merchant-icon{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px;background:var(--teal-soft);color:var(--teal2)}
-.home-merchant-copy{flex:1 1 220px;min-width:0}
-.home-merchant h2{margin:0;font-size:1.1rem;line-height:1.5}
+.home-merchant-copy{flex:1 1 220px;min-width:0;overflow-wrap:anywhere}
+.home-merchant h2{margin:0;font-size:clamp(1rem,.9rem + .45vw,1.125rem);line-height:1.45;text-wrap:balance}
 .home-merchant p,.home-merchant small{margin:4px 0 0;color:var(--muted)}
+.home-merchant-copy p{font-size:clamp(.875rem,.82rem + .25vw,1rem);line-height:1.65;text-wrap:pretty}
 .home-merchant-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:8px}
-.home-merchant-actions .btn{min-height:44px;justify-content:center}
+.home-merchant .btn{min-height:44px;justify-content:center;text-align:center;white-space:normal}
+.home-merchant .btn .i{flex:none}
 .home-merchant-validity{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;padding:10px 12px;border-radius:12px;background:var(--surface2)}
 .home-merchant-validity small{margin:0}
-@media(max-width:480px){.home-merchant-head>.btn{width:100%;justify-content:center}}
+@media(max-width:480px){
+ .home-merchant-head{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:start;gap:10px}
+ .home-merchant-icon{width:36px;height:36px;border-radius:10px}
+ .home-merchant-head>.btn{grid-column:1/-1;width:100%;justify-content:center}
+}
 
 /* Partner Hub Container in Community Tab */
 .partner-hub-wrap {
@@ -5210,7 +5216,7 @@ function renderHomeSubBox(){
   .sort((a,b)=>b.expired.end-a.expired.end)[0];
  const sid=(current||previous||states[0]).place.id;
  const refreshAt=Math.min(...states.flatMap(({active,upcoming})=>[active?.end??Infinity,upcoming[0]?.start??Infinity]));
- const heading=current?'پنل مدیریت کسب‌وکار':previous?'اشتراک کسب‌وکارت به پایان رسیده':'کسب‌وکارت را به اصفهان معرفی کن';
+ const heading=current?'پنل مدیریت کسب‌وکار':previous?'اشتراک کسب‌وکارت به پایان رسیده':'کسب‌وکارت را به اصفهان معرفی کن';
  const description=current?esc(current.place.n):previous?
   `با تمدید اشتراک «${esc(previous.place.n)}»، دوباره به پنل مدیریت دسترسی پیدا کن.`:
   'با منوی دیجیتال، کد QR و باشگاه مشتریان، کسب‌وکارت را به کاشفان اصفهان معرفی کن.';
