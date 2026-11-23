@@ -1260,26 +1260,19 @@ body.in-battle .toast.out{transform:translateY(8px)!important}
   }
 }
 
-/* Hide any legacy elements inside .sub-section-home */
-.sub-section-home > .sec-h,
-.sub-section-home .sub-biz-chips,
-#homeSubBizChips {
-  display: none !important;
-}
-
-.admin-mini{display:flex;align-items:center;gap:12px;width:100%;box-sizing:border-box;padding:10px 12px;background:var(--surface);border:1.5px solid var(--line);border-radius:16px;box-shadow:var(--sh1);color:var(--text);font:inherit;text-align:start;cursor:pointer;transition:border-color .2s ease,box-shadow .2s ease,transform .15s ease}
-.admin-mini:hover{border-color:var(--teal);box-shadow:var(--sh2)}
-.admin-mini:active{transform:scale(.99)}
-.admin-mini:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
-.admin-mini .am-ic{flex:none;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--teal-soft);color:var(--teal2)}
-.admin-mini .am-ic .i{width:22px;height:22px}
-.admin-mini .am-tx{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.admin-mini .am-tx b{font-size:.95rem;font-weight:900}
-.admin-mini .am-tx small{font-size:.76rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.admin-mini .am-go{flex:none;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 12px;border-radius:12px;background:var(--gold);color:var(--gold-ink);font-weight:900;font-size:.82rem}
-.admin-mini .am-go .i{width:16px;height:16px}
-.admin-mini .am-go em{font-style:normal}
-@media (max-width:380px){.admin-mini .am-go em{display:none}.admin-mini .am-go{padding:0 9px}}
+.home-merchant{display:grid;gap:16px;padding:clamp(14px,3vw,24px);border-radius:22px}
+.card.home-merchant--offer,[data-theme=dark] .card.home-merchant--offer{background:linear-gradient(135deg,var(--teal-soft),var(--surface) 72%)}
+.card.home-merchant--expired{border-inline-start:4px solid var(--gold)}
+.home-merchant-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.home-merchant-icon{display:grid;place-items:center;flex:none;width:44px;height:44px;border-radius:14px;background:var(--teal-soft);color:var(--teal2)}
+.home-merchant-copy{flex:1 1 220px;min-width:0}
+.home-merchant h2{margin:0;font-size:1.1rem;line-height:1.5}
+.home-merchant p,.home-merchant small{margin:4px 0 0;color:var(--muted)}
+.home-merchant-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr));gap:8px}
+.home-merchant-actions .btn{min-height:44px;justify-content:center}
+.home-merchant-validity{display:flex;align-items:baseline;gap:4px 12px;flex-wrap:wrap;padding:10px 12px;border-radius:12px;background:var(--surface2)}
+.home-merchant-validity small{margin:0}
+@media(max-width:480px){.home-merchant-head>.btn{width:100%;justify-content:center}}
 
 /* Partner Hub Container in Community Tab */
 .partner-hub-wrap {
@@ -2596,7 +2589,7 @@ a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid 
 
 /* ===== QA fixes: legibility, tap targets, mobile ===== */
 .partner-card-item .p-badge,.p-head small,.screen small,.nav small,.hud small,.res b,.res small,.seg button span,.p-badge,.screen div>span:not([class]){font-size:max(12px,0px)!important}
-.tab-l,.why,.pill,.ad-tag,.chip,.st,small.muted,.meta span,.am-tx small,.res small,.tag,.cat,.pc-tag{font-size:12px!important}
+.tab-l,.why,.pill,.ad-tag,.chip,.st,small.muted,.meta span,.res small,.tag,.cat,.pc-tag{font-size:12px!important}
 .link,.res,.chip,.partner-tabs-seg button{position:relative}
 .link::after{content:"";position:absolute;inset:-9px -6px}
 .partner-tabs-seg button,.seg button,.chip{min-height:40px}
@@ -5207,15 +5200,39 @@ function routeCard(){const st=todayRoute();if(!st.length)return'';const done=st.
  ${done<st.length?`<button class="btn teal wide" data-act="showRoute">${icon('route')} شروع مسیر</button>`:''}</article>`}
 function challengeCard(){const n=S.day.claimed.length;return `<article class="card daily">${sectionH('چالش‌های امروز',`<span class="count">${fa(n)}/${fa(CHALS.length)}</span>`)}<div class="chal-list">${CHALS.map(c=>{const v=Math.min(c.v(),c.n),done=S.day.claimed.includes(c.id),ready=!done&&v>=c.n;return `<div class="chal ${done?'done':''} ${ready?'ready':''}"><span class="ci">${done?icon('check'):icon(c.ic)}</span><div class="chal-t"><b>${c.t}</b>${done?'':progress(v,c.n,ready?'gold':'')}</div>${done?`<small class="ok">انجام شد</small>`:ready?`<button class="btn gold sm" data-act="claimChal" data-id="${c.id}">دریافت</button>`:`<span class="mini-rw">${c.r.coins?IC.coin+fa(c.r.coins):IC.gem+fa(c.r.gems)}</span>`}</div>`}).join('')}</div></article>`}
 function renderHomeSubBox(){
- return `<section class="sub-section-home block">
-  <button type="button" class="admin-mini" data-act="home-open-admin" aria-label="ورود به پنل مدیریت همکاران">
-   <span class="am-ic">${icon('store')}</span>
-   <span class="am-tx"><b>پنل مدیریت کسب‌وکار</b><small>منو، QR، اشتراک و باشگاه مشتریان</small></span>
-   <span class="am-go">${icon('settings')}<em>ورود</em></span>
-  </button>
+ const time=now();
+ const businesses=PLACES.filter(p=>p.biz);
+ const selected=businesses.find(p=>p.id===S.currentSubBizSid)||businesses[0];
+ if(!selected)return '';
+ const states=[selected,...businesses.filter(p=>p!==selected)].map(place=>({place,...getMenuSubState(place.id,time)}));
+ const current=states.find(state=>state.active);
+ const previous=states[0].expired?states[0]:states.filter(state=>state.expired)
+  .sort((a,b)=>b.expired.end-a.expired.end)[0];
+ const sid=(current||previous||states[0]).place.id;
+ const refreshAt=Math.min(...states.flatMap(({active,upcoming})=>[active?.end??Infinity,upcoming[0]?.start??Infinity]));
+ const heading=current?'پنل مدیریت کسب‌وکار':previous?'اشتراک کسب‌وکارت به پایان رسیده':'کسب‌وکارت را به اصفهان معرفی کن';
+ const description=current?esc(current.place.n):previous?
+  `با تمدید اشتراک «${esc(previous.place.n)}»، دوباره به پنل مدیریت دسترسی پیدا کن.`:
+  'با منوی دیجیتال، کد QR و باشگاه مشتریان، کسب‌وکارت را به کاشفان اصفهان معرفی کن.';
+ return `<section class="sub-section-home block card home-merchant home-merchant--${current?'active':previous?'expired':'offer'}" aria-labelledby="homeMerchantTitle"${Number.isFinite(refreshAt)?` data-refresh-at="${refreshAt}"`:''}>
+  <div class="home-merchant-head">
+   <span class="home-merchant-icon" aria-hidden="true">${icon('store')}</span>
+   <div class="home-merchant-copy"><h2 id="homeMerchantTitle">${heading}</h2><p>${description}</p></div>
+   <button type="button" class="btn gold" data-act="${current?'openAdmin':'partner'}" data-sid="${sid}">${current?'ورود به پنل مدیریت':previous?'تمدید اشتراک':'همکاری با ما'}</button>
+  </div>
+  ${current?`<div class="home-merchant-validity"><b>اشتراک فعال${current.curPlan?' · '+esc(current.curPlan.name):''}</b>
+   <small data-sub-end="${current.active.end}">${homeSubRemaining(current.active.end,time)}</small></div>
+  <div class="home-merchant-actions">
+   <button type="button" class="btn ghost" data-act="viewMenu" data-id="${sid}">${icon('book')} مشاهدهٔ منو</button>
+   <button type="button" class="btn ghost" data-act="mQrPrint" data-sid="${sid}">${icon('qr')} استند QR</button>
+   <button type="button" class="btn ghost" data-act="partner" data-sid="${sid}">${icon('gift')} مدیریت اشتراک</button>
+  </div>`:''}
  </section>`;
 }
-const subscriptionCard=renderHomeSubBox;
+function homeSubRemaining(end,time){
+ const days=Math.floor((end-time)/864e5);
+ return `زمان باقی‌مانده: ${days?fa(days)+' روز':fmtDur((end-time)/1000)}`;
+}
 function placeTile(r){const p=r.p;return `<button class="tile" data-act="openPlace" data-id="${p.id}" style="--c:${CATS[p.cat].c}">${placeThumb(p)}${!S.visits[p.id]?`<i class="tile-chest"><img src="${A.chest}" alt="صندوق کشف"></i>`:''}<span class="tile-b"><b>${p.n}</b><small>${icon(CATS[p.cat].ic)} ${fmtDist(dist(p))}${r.why[0]?' — '+r.why[0]:''}</small></span></button>`}
 function greetWord(){const hr=new Date().getHours();return hr<5?'شب بخیر':hr<12?'صبح بخیر':hr<17?'روز بخیر':hr<20?'عصر بخیر':'شب بخیر'}
 
@@ -6022,14 +6039,16 @@ function qrPrint(sid){
 const menuUrl=sid=>location.href.split('#')[0]+'#menu/'+sid;
 
 /* ---------- subscription engine ---------- */
-function getMenuSubState(sid){
+function getMenuSubState(sid,time=now()){
  const M=S.menuSubscription||={periods:[],invoices:[],version:'MENU-1.0'};
  M.periods||=[];M.invoices||=[];
- const active=M.periods.find(p=>p.sid===sid&&p.start<=now()&&p.end>now());
- const upcoming=M.periods.filter(p=>p.sid===sid&&p.start>now()).sort((a,b)=>a.start-b.start);
+ const periods=M.periods.filter(p=>p.sid===sid);
+ const active=periods.find(p=>p.start<=time&&p.end>time);
+ const upcoming=periods.filter(p=>p.start>time).sort((a,b)=>a.start-b.start);
+ const expired=periods.reduce((latest,p)=>p.end<=time&&(!latest||p.end>latest.end)?p:latest,null);
  const pendingInv=M.invoices.find(i=>i.sid===sid&&!i.paid&&!i.canceled);
  const curPlan=active?MENU_PLANS.find(p=>p.id===active.plan):null;
- return {active,upcoming,pendingInv,curPlan};
+ return {active,upcoming,expired,pendingInv,curPlan};
 }
 function chooseMenuPlan(planId,sid){
  const p=MENU_PLANS.find(x=>x.id===planId);if(!p)return;
@@ -6573,7 +6592,6 @@ const ACT={selectBase:t=>selectBase(t.dataset.id),clearBase:()=>{selectedBase=nu
  partnerQuickCheckout:t=>partnerQuickCheckout(t.dataset.plan,t.dataset.sid),
  viewMenu:t=>openDigitalMenu(t.dataset.id),
  manageMenu:t=>{const sid=t?.dataset?.id||t?.dataset?.sid||'cafe1';if(S)S.currentSubBizSid=sid;currentSubBizSid=sid;save();go('partner');},
- 'home-sub-manage':()=>go('partner'),'home-open-admin':()=>{const M=S.menuSubscription||{};const biz=PLACES.filter(p=>p.biz);const cur=S.currentSubBizSid||'cafe1';const pick=getMenuSubState(cur).active?cur:((biz.find(p=>getMenuSubState(p.id).active)||{}).id||cur);openEmbeddedAdminPanel(pick)},
  'open-dm-catalog':()=>{const sec=$('.cafes-showcase');if(sec)sec.scrollIntoView({behavior:'smooth'});else go('city','local');},
  mChoosePlan:t=>chooseMenuPlan(t.dataset.plan,t.dataset.sid),
  mPayInv:t=>payMenuInvoice(t.dataset.id),
@@ -6609,6 +6627,15 @@ function tick(){if(RESETTING)return;if(TAB==='base')updateBaseBuild();const d=S.
  S.chests.forEach(c=>{if(c&&c.st==='open'&&c.end<=now()){c.st='ready';save();if(!activeCombat){toast(CHEST_T[c.t].n+' آماده است!','ok');if(TAB==='battle'||TAB==='home')rerender()}}});
  const nb=S.buffs.length;S.buffs=S.buffs.filter(b=>b.end>now());if(nb!==S.buffs.length)save();
  reviewPosts();
+ if(TAB==='home'){
+  const section=$('#scr-home .home-merchant'),time=now();
+  if(section&&+section.dataset.refreshAt<=time)section.outerHTML=renderHomeSubBox();
+  const remaining=$('#scr-home [data-sub-end]');
+  if(remaining){
+   const label=homeSubRemaining(+remaining.dataset.subEnd,time);
+   if(remaining.textContent!==label)remaining.textContent=label;
+  }
+ }
  $$('[data-timer]').forEach(el=>{el.textContent=fmtDur((+el.dataset.timer-now())/1000)});
  updateDots();}
 function boot(){const _t=document.getElementById('toasts');if(_t)_t.addEventListener('click',()=>[..._t.children].forEach(c=>c._kill&&c._kill()));load();applyPrefs();shell();renderHUD();go('home');setInterval(tick,1000);
